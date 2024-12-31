@@ -20,7 +20,6 @@ void input(int *time_hh, int *time_mm, int *time_ss)
 
 void calculation(int time1[], int time2[], int choice)
 {
-    int temp1, temp2;
 
     if (choice == 1) // Addition
     {
@@ -30,17 +29,14 @@ void calculation(int time1[], int time2[], int choice)
 
         if (time1[2] >= 60)
         {
-            temp1 = time1[2] % 60;
-            temp2 = time1[2] / 60;
-            time1[2] = temp1;
-            time1[1] += temp2;
+            time1[1] += time1[2] / 60;
+            time1[2] %= 60;
         }
+
         if (time1[1] >= 60)
         {
-            temp1 = time1[1] % 60;
-            temp2 = time1[1] / 60;
-            time1[1] = temp1;
-            time1[0] += temp2;
+            time1[0] += time1[1] / 60;
+            time1[1] %= 60;
         }
     }
     else if (choice == 2) // Subtraction
