@@ -1,90 +1,103 @@
 #include <stdio.h>
 #include <stdlib.h>
-void main()
+
+void input(int *time_hh, int *time_mm, int *time_ss)
 {
-    int temp1, temp2, choice, choice2 = 1, time2_hh, time2_mm, time2_ss, time1_hh = 0, time1_mm = 0, time1_ss = 0;
-    printf("Enter the time in HH MM SS Format : ");
+    printf("Enter the time in HH MM SS format: ");
     while (1)
     {
-        scanf("%d%d%d", &time1_hh, &time1_mm, &time1_ss);
-        if (time1_mm >= 60 || time1_ss >= 60)
+        scanf("%d%d%d", time_hh, time_mm, time_ss);
+        if (*time_mm >= 60 || *time_ss >= 60)
         {
-            printf("Wrong Input\nType Again : ");
+            printf("Wrong Input. Type Again: ");
         }
         else
+        {
             break;
+        }
     }
+}
+
+void calculation(int time1[], int time2[], int choice)
+{
+    int temp1, temp2;
+
+    if (choice == 1) // Addition
+    {
+        time1[0] += time2[0];
+        time1[1] += time2[1];
+        time1[2] += time2[2];
+
+        if (time1[2] >= 60)
+        {
+            temp1 = time1[2] % 60;
+            temp2 = time1[2] / 60;
+            time1[2] = temp1;
+            time1[1] += temp2;
+        }
+        if (time1[1] >= 60)
+        {
+            temp1 = time1[1] % 60;
+            temp2 = time1[1] / 60;
+            time1[1] = temp1;
+            time1[0] += temp2;
+        }
+    }
+    else if (choice == 2) // Subtraction
+    {
+        time1[0] -= time2[0];
+        time1[1] -= time2[1];
+        time1[2] -= time2[2];
+
+        if (time1[2] < 0)
+        {
+            time1[2] += 60;
+            time1[1]--;
+        }
+
+        if (time1[1] < 0)
+        {
+            time1[1] += 60;
+            time1[0]--;
+        }
+    }
+}
+
+int main()
+{
+    int choice;
+    int time1[3], time2[3];
+
+    input(&time1[0], &time1[1], &time1[2]);
+
     do
     {
+
         printf("Press \e[1m\"1\"\e[m for adding and \e[1m\"2\"\e[m for subtracting : ");
         while (1)
         {
-            scanf("%d", &choice2);
-            if (choice2 != 1 && choice2 != 2)
+            scanf("%d", &choice);
+            if (choice != 1 && choice != 2)
             {
-                printf("Wrong choice Press Correct Option : ");
+                printf("Wrong choice. Press Correct Option: ");
             }
             else
+            {
                 break;
-        }
-        printf("Enter next time in HH MM SS Format : ");
-        while (1)
-        {
-            scanf("%d%d%d", &time2_hh, &time2_mm, &time2_ss);
-            if (time2_mm >= 60 || time2_ss >= 60)
-            {
-                printf("Wrong Input\nType Again : ");
-            }
-            else
-                break;
-        }
-
-        if (choice2 == 1)
-        {
-            time1_hh += time2_hh;
-            time1_mm += time2_mm;
-            time1_ss += time2_ss;
-            if (time1_ss >= 60)
-            {
-                temp1 = time1_ss % 60;
-                temp2 = time1_ss / 60;
-                time1_ss = temp1;
-                time1_mm += temp2;
-            }
-            if (time1_mm >= 60)
-            {
-                temp1 = time1_mm % 60;
-                temp2 = time1_mm / 60;
-                time1_mm = temp1;
-                time1_hh += temp2;
-            }
-        }
-        else if (choice2 == 2)
-        {
-
-            time1_hh -= time2_hh;
-            time1_mm -= time2_mm;
-            time1_ss -= time2_ss;
-
-            if (time1_ss < 0)
-            {
-                time1_ss += 60;
-                time1_mm--;
-            }
-
-            if (time1_mm < 0)
-            {
-                time1_mm += 60;
-                time1_hh--;
             }
         }
 
-        printf("The resultant time is %02d:%02d:%02d\n", time1_hh, time1_mm, time1_ss);
+        input(&time2[0], &time2[1], &time2[2]);
+
+        calculation(time1, time2, choice);
+
+        printf("The resultant time is %02d:%02d:%02d\n", time1[0], time1[1], time1[2]);
 
         printf("Press \e[1m\"1\"\e[m to continue and \e[1m\"0\"\e[m to stop : ");
         scanf("%d", &choice);
     } while (choice);
-    printf("Stopping...\n");
+
+    return 0;
 }
 
 /*
